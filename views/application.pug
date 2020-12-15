@@ -1,0 +1,8 @@
+h1= title
+p Welcome to fun
+form(method='POST' action='application/play')
+  each item in playlists
+    div
+        label(for='playlist')= item.name
+        input#playlist.form-control(type='radio', name='playlist' value=item.id)
+  button.btn.btn-primary(type='submit') Sign up
