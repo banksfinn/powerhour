@@ -183,7 +183,7 @@ async function play(album_id, req_cookies, res) {
         let body = {'uris': ['spotify:track:'+songs[i]], 'position_ms': start_time*1000};
         await sendRequest(req_cookies, res, url, {method: 'PUT', body: JSON.stringify(body)});
 
-        await delay(9000);
+        await delay(6000);
         await beerTrack(req_cookies, res);
     }
 }
