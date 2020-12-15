@@ -1,8 +1,25 @@
-h1= title
-p Welcome to fun
+h1 Select your base playlist
 form(method='POST' action='application/play')
-  each item in playlists
-    div
-        label(for='playlist')= item.name
-        input#playlist.form-control(type='radio', name='playlist' value=item.id)
-  button.btn.btn-primary(type='submit') Sign up
+  div
+      select(name='playlist')
+        for item in playlists
+          option(value=item.id)= item.name
+  div
+    input.checkbox-input(type='checkbox' name='beer_sound' id='beer_checkbox')
+    label(for='beer_checkbox') Include beer sound
+  div
+    input.checkbox-input(type='checkbox' name='shuffle' id='shuffle_checkbox')
+    label(for='shuffle_checkbox') Shuffle playlist
+  div
+    input(type='text' name='num_songs' id='num_songs_input' value=60)
+    label(for='num_songs_input') Number of songs
+  div
+    input(type='text' name='interval' id='interval_input' value=60)
+    label(for='interval_input') Time between songs (seconds)
+  div
+    | You **must** have played Spotify out of the device you wish to use recently, or else Spotify will not have
+    | a method for outputting these songs.
+  div
+    | I just toggle the play button on the device to ensure it is "active"
+  div
+    button.btn.btn-primary(type='submit') Start Power Hour

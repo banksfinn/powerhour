@@ -2,3 +2,11 @@ html
   head
   body
     h1 Success, enjoy the power hour!
+    div
+      | Note to stop the app from continuing to control your Spotify, you can remove its control permission
+      | within Spotify (thanks Andres for the tip)
+    div
+      | Adding a stop button here is top priority
+    form(action="clear" method="POST")
+        input(type="submit" name="clear_intervals" id="clear_intervals")
+        label(for='clear_intervals') Stop
