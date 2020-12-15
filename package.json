@@ -3,24 +3,66 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/server.js"
+    "dev": "nodemon ./src/server.js",
+    "start": "node ./src/server.js",
+    "check-coverage": "nyc report --check-coverage --lines 100",
+    "lint": "eslint --ignore-path .gitignore .",
+    "fix": "eslint --ignore-path .gitignore . --fix",
+    "test": "nyc mocha test --recursive --exit"
   },
   "dependencies": {
     "base64url": "^3.0.1",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.0",
     "btoa": "^1.2.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "express": "~4.16.1",
+    "express": "^4.17.1",
     "http-errors": "~1.6.3",
+    "ibm-cloud-env": "^0",
     "install": "^0.13.0",
     "js-sha256": "^0.9.0",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.1",
     "pug": "^3.0.0",
     "request": "^2.88.2",
-    "subtle-digest": "^1.1.1"
+    "subtle-digest": "^1.1.1",
+    "swagger-ui-express": "^4.1.5"
+  },
+  "engines": {
+    "node": "^12.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test && npm run check-coverage"
+    }
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "exclude": [
+      "test"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.15.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "husky": "^4.3.5",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.1",
+    "sinon-chai": "^3.5.0",
+    "supertest": "^6.0.1"
   }
 }
