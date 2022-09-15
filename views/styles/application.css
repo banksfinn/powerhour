@@ -1,0 +1,101 @@
+div {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.regular-text {
+    font-family: 'Titillium Web', sans-serif;
+    text-align: center;
+}
+
+.small-text {
+    font-size: 14px;
+    text-align: center;
+}
+
+.start-button {
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    background: white;
+    border: 1px solid #888888;
+    width: 250px;
+    height: 70px;
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.flex {
+    display: flex;
+}
+
+.playlist-start {
+    margin-top: 25vh;
+}
+
+.standard-checkbox {
+    height: 80%;
+    margin-left: 0;
+}
+
+.slight-margins {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.split-width {
+    width: 50%;
+}
+
+.left-margin-20 {
+    margin-left: 20px;
+}
+
+.flex-start {
+    justify-content: flex-start;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+.error-message {
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    margin-top: 40vh;
+}
+
+.error-submessage {
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+}
+
+.center-items {
+    justify-content: center;
+}
+
+.large-font {
+    font-size: 30px;
+}
+.larger-font {
+    font-size: 48px;
+    font-weight: 600;
+}
+
+.playlist-dropdown {
+    width: 200px;
+    border-radius: 10px;
+    text-align-last: center;
+}
+
+.margin-top-20{
+    margin-top: 20px;
+}
+
+.genre-dropdown {
+    margin-left: 20px;
+    width: 150px;
+    border-radius: 5px;
+}

@@ -1,19 +1,25 @@
-h1 Your playlist is too short, so we will use the radio functionality
-form(method='POST' action='radio')
-  div
-    input(type="hidden" name='playlist' value=playlist)
-    input(type="hidden" name='beer' value=beer)
-    input(type="hidden" name='num_songs' value=num_songs)
-    input(type="hidden" name='interval' value=interval)
-  div
-    | The radio is generated based on the most common artist of the playlist, in conjunction with the first song in the
-    | playlist and the genre chosen below.
-  div
-    | Spotify doesn't have any genre data within their song API, otherwise I would do this for you.
-  div
-    | Genre:
-    select(name='genre')
-      for item in genres
-        option(value=item)= item
-  div
-    button.btn.btn-primary(type='submit') Start Power Hour
+html
+  head
+    title Power Hour - Radio
+    style
+      include styles/application.css
+    link(rel="preconnect" href="https://fonts.gstatic.com")
+    link(href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;600&display=swap" rel="stylesheet")
+  body
+    div(class='large-font flex center-items playlist-start') Your playlist is too short, so we need to create a radio
+    form(method='POST' action='radio')
+      div
+        input(type="hidden" name='playlist' value=playlist)
+        input(type="hidden" name='beer' value=beer)
+        input(type="hidden" name='num_songs' value=num_songs)
+        input(type="hidden" name='interval' value=interval)
+      div(class='regular-text')
+        | The radio is generated based on the most common artist of the playlist, the first song in the
+        | playlist, and the genre chosen below.
+      div(class='regular-text flex center-items margin-top-20')
+        | Genre:
+        select(name='genre' class='genre-dropdown regular-text')
+          for item in genres
+            option(value=item)= item
+      div(class='flex center-items')
+              button.btn.btn-primary(class='start-button' type='submit') Start Power Hour

@@ -1,25 +1,41 @@
-h1 Select your base playlist
-form(method='POST' action='application/play')
-  div
-      select(name='playlist')
-        for item in playlists
-          option(value=item.id)= item.name
-  div
-    input.checkbox-input(type='checkbox' name='beer_sound' id='beer_checkbox')
-    label(for='beer_checkbox') Include beer sound
-  div
-    input.checkbox-input(type='checkbox' name='shuffle' id='shuffle_checkbox')
-    label(for='shuffle_checkbox') Shuffle playlist
-  div
-    input(type='text' name='num_songs' id='num_songs_input' value=60)
-    label(for='num_songs_input') Number of songs
-  div
-    input(type='text' name='interval' id='interval_input' value=60)
-    label(for='interval_input') Time between songs (seconds)
-  div
-    | You **must** have played Spotify out of the device you wish to use recently, or else Spotify will not have
-    | a method for outputting these songs.
-  div
-    | I just toggle the play button on the device to ensure it is "active"
-  div
-    button.btn.btn-primary(type='submit') Start Power Hour
+html
+  head
+    title Power Hour
+    style
+      include styles/application.css
+    link(rel="preconnect" href="https://fonts.gstatic.com")
+    link(href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;600&display=swap" rel="stylesheet")
+  body
+    form(method='POST' action='application/play')
+      div(class='flex playlist-start')
+        div(class='large-font split-width flex flex-end') Base Playlist:
+        div(class='large-font split-width flex flex-start left-margin-20')
+          select(name='playlist' class='playlist-dropdown regular-text')
+            for item in playlists
+              option(value=item.id)= item.name
+      div(class='flex center-items slight-margins')
+        div(class='split-width flex flex-end')
+          label(for='beer_checkbox') Beer Sound:
+        div(class='split-width flex flex-start left-margin-20')
+          input.checkbox-input(type='checkbox' class='standard-checkbox' name='beer_sound' id='beer_checkbox')
+
+      div(class='flex center-items slight-margins')
+        div(class='split-width flex flex-end')
+          label(for='shuffle_checkbox') Shuffle Playlist:
+        div(class='split-width flex flex-start left-margin-20')
+          input.checkbox-input(type='checkbox' class='standard-checkbox' name='shuffle' id='shuffle_checkbox')
+      div(class='flex center-items slight-margins')
+        div(class='split-width flex flex-end')
+          label(for='num_songs_input') Number of Songs:
+        div(class='split-width flex flex-start left-margin-20')
+          input(type='text' name='num_songs' id='num_songs_input' class='regular-text' value=60)
+      div(class='flex center-items slight-margins')
+        div(class='split-width flex flex-end')
+          label(for='interval_input') Time between Songs (seconds):
+        div(class='split-width flex flex-start left-margin-20')
+          input(type='text' name='interval' id='interval_input' class='regular-text' value=60)
+      div(class='flex center-items')
+        button.btn.btn-primary(class='start-button' type='submit') Start Power Hour
+      div(class='flex center-items small-text')
+        | Ensure that Spotify recognizes an active device by playing music through the device of choice
+        | before starting the power hour.

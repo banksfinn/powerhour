@@ -9,6 +9,7 @@ const querystring = require('querystring');
 
 let access_token = '';
 let timeouts = [];
+let counter = 1;
 
 function getID(track) {
     return track['track']['id'];
@@ -233,16 +234,14 @@ async function getGenres(req_cookies) {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 async function playSong(song_id, beer, interval, req_cookies) {
+    if (beer) {
+        await beerTrack(req_cookies);
+        await delay(500);
+    }
     let url = 'https://api.spotify.com/v1/me/player/play';
     let start_time = await getHypePart(song_id, interval, req_cookies);
     let body = {'uris': ['spotify:track:'+song_id], 'position_ms': start_time*1000};
     await sendRequest(req_cookies, url, {method: 'PUT', body: JSON.stringify(body)});
-    if (beer) {
-        await delay(interval * 1000 - 2199 - 1000); // to account for lag of requests
-        await beerTrack(req_cookies);
-    } else{
-        await delay(interval * 1000 - 1000); // to account for lag of requests
-    }
 }
 
 async function play_modified(album_id, beer_sound, num_songs, interval, genre, req_cookies) {
@@ -257,8 +256,15 @@ async function play_modified(album_id, beer_sound, num_songs, interval, genre, r
             }
             cur_recommendation += 1;
         }
-        await playSong(songs[i]['id'], beer_sound, interval, req_cookies);
+        let tmp = setTimeout( function() { playSong(songs[i]['id'], beer_sound, interval, req_cookies); }, interval*i*1000)
+        timeouts.push(tmp);
     }
+}
+
+async function checkPlayer(req_cookies) {
+    let url = 'https://api.spotify.com/v1/me/player';
+    let response = await sendRequest(req_cookies, url, {});
+    return response.status;
 }
 
 function shuffleSongs(a) {
@@ -269,15 +275,6 @@ function shuffleSongs(a) {
     return a;
 }
 
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-async function sleep(fn, time, ...args) {
-    let tmp = await timeout(time*1000);
-    fn(...args);
-    return tmp
-}
-
 async function play(album_id, beer_sound, num_songs, interval, shuffle, req_cookies) {
     let songs = await getSongs(album_id, req_cookies);
     if (shuffle) shuffleSongs(songs);
@@ -285,27 +282,45 @@ async function play(album_id, beer_sound, num_songs, interval, shuffle, req_cook
     for (let i = 0; i < num_songs; i++) {
         let tmp = setTimeout( function() { playSong(songs[i]['id'], beer_sound, interval, req_cookies); }, interval*i*1000)
         timeouts.push(tmp);
-        //await playSong(songs[i]['id'], beer_sound, interval, req_cookies);
+        let tmp2 = setTimeout(incrementCounter, interval*i*1000);
+        timeouts.push(tmp2);
     }
 }
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/radio', async function(req, res) {
-    res.render('success');
-    await play_modified(req.body['playlist'],
-        req.body['beer_sound'] === 'on',
-        parseInt(req.body['num_songs']),
-        parseFloat(req.body['interval']),
-        req.body['genre'],
-        req.cookies);
+    let player = await checkPlayer(req.cookies);
+    if (player !== 200) {
+        let message = player === 204 ? 'No active device found': 'Unknown error: ' + player.toString();
+        let subMessage = player === 204 ? 'Try playing music out of the desired device when starting the power hour' : '';
+        res.render('error', {message: message, subMessage: subMessage})
+    } else {
+        res.render('success');
+        await play_modified(req.body['playlist'],
+                            req.body['beer'],
+                            parseInt(req.body['num_songs']),
+                            parseFloat(req.body['interval']),
+                            req.body['genre'],
+                            req.cookies);
+    }
 });
+
+async function pauseMusic(req_cookies) {
+    let url = 'https://api.spotify.com/v1/me/player/pause';
+    return sendRequest(req_cookies, url, {method: 'PUT'})
+}
+
+function incrementCounter(prev_value) {
+    return prev_value + 1;
+}
 
 router.post('/clear', async function(req, res) {
     for (let i = 0; i < timeouts.length; i++) {
         clearTimeout(timeouts[i]);
     }
-    res.sendStatus(200);
+    await pauseMusic(req.cookies);
+    res.redirect('/application');
 });
 
 router.post('/play' , async function(req, res) {
@@ -323,13 +338,20 @@ router.post('/play' , async function(req, res) {
             interval: interval,
             genres: genres});
     } else {
-        res.render('success');
-        await play(req.body['playlist'],
-            req.body['beer_sound'] === 'on',
-            num_songs,
-            interval,
-            req.body['shuffle'] === 'on',
-            req.cookies);
+        let player = await checkPlayer(req.cookies);
+        if (player !== 200) {
+            let message = player === 204 ? 'No active device found': 'Unknown error: ' + player.toString();
+            let subMessage = player === 204 ? 'Try playing music out of the desired device when starting the power hour' : '';
+            res.render('error', {message: message, subMessage: subMessage})
+        } else {
+            res.render('success', {counter: incrementCounter});
+            await play(req.body['playlist'],
+                req.body['beer_sound'] === 'on',
+                num_songs,
+                interval,
+                req.body['shuffle'] === 'on',
+                req.cookies);
+        }
     }
 });
 

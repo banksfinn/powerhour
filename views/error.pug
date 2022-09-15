@@ -1,4 +1,13 @@
-
-h1= message
-h2= error.status
-pre #{error.stack}
+html
+  head
+    title Power Hour - Error
+    style
+      include styles/application.css
+    link(rel="preconnect" href="https://fonts.gstatic.com")
+    link(href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;600&display=swap" rel="stylesheet")
+  body
+    h1(class='error-message')= message
+    h5(class='error-submessage')= subMessage
+    form(action='/application')
+      div(class='flex center-items')
+        button.btn.btn-primary(class='start-button' type='submit') Go Back

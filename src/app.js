@@ -11,12 +11,7 @@ app.use('/auth', authRoute);
 var mainApplication = require('./services/application');
 app.use('/application', mainApplication);
 app.use('/', function(req, res, next) {
-    if (req.cookies && 'auth_token' in req.cookies) {
-        res.redirect('/application');
-    }
-    else {
-        res.redirect('/auth');
-    }
+    res.redirect('/auth');
 });
 
 

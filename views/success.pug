@@ -1,12 +1,16 @@
 html
   head
+      title Power Hour - Active
+      style
+        include styles/application.css
+      link(rel="preconnect" href="https://fonts.gstatic.com")
+      link(href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;600&display=swap" rel="stylesheet")
   body
-    h1 Success, enjoy the power hour!
-    div
-      | Note to stop the app from continuing to control your Spotify, you can remove its control permission
-      | within Spotify (thanks Andres for the tip)
-    div
-      | Adding a stop button here is top priority
-    form(action="clear" method="POST")
-        input(type="submit" name="clear_intervals" id="clear_intervals")
-        label(for='clear_intervals') Stop
+    div()= incrementCounter
+    div(class='larger-font flex center-items playlist-start') Enjoy the power hour!
+    div(class='regular-text')
+      | Don't leave this page! If you want to stop this from controlling your Spotify, you have to use the button below!
+      | Otherwise, you will have to disconnect this app from Spotify for it to stop sending songs.
+    form(action="clear" class='flex center-items' method="POST")
+      div(class='flex center-items')
+      button.btn.btn-primary(class='start-button' type='submit') Stop

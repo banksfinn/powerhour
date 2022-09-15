@@ -32,7 +32,7 @@ var generateRandomString = function(length) {
     return text;
 };
 
-var stateKey = 'spotify_auth_state playlist-read-private';
+var stateKey = 'spotify_auth_state';
 
 var router = express.Router();
 
@@ -46,7 +46,7 @@ router.use('/login', function(req, res) {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    var scope = 'user-read-private user-read-email user-modify-playback-state playlist-read-private';
+    var scope = 'user-read-private user-read-email user-read-playback-state user-modify-playback-state playlist-read-private';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',

@@ -1,0 +1,26 @@
+.start-button {
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    background: white;
+    border: 1px solid #888888;
+    width: 250px;
+    height: 70px;
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.flex {
+    display: flex;
+}
+
+.error-message {
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    margin-top: 40vh;
+}
+.center-items {
+    justify-content: center;
+}
